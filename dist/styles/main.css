@@ -12,7 +12,7 @@
  }
  
  body {
-     background-image: url(/app/assets/images/images/blurred_backgrounds/blur_bg_3.jpg);
+     background-image: url(/assets/images/blurred_backgrounds/blur_bg_3.jpg);
      background-repeat: no-repeat;
      background-attachment: fixed;
      background-position: center center;
