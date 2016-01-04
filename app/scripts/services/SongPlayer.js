@@ -1,5 +1,5 @@
  (function () {
-     function SongPlayer(Fixtures) {
+     function SongPlayer($rootScope, Fixtures) {
          /**
           * @desc Create objects and methods to set,play and pause song;
           * @type {Object Constructor}
@@ -34,6 +34,20 @@
                  formats: ['mp3'],
                  preload: true
              });
+
+             currentBuzzObject.bind('timeupdate', function () {
+                 $rootScope.$apply(function () {
+                     SongPlayer.currentTime = currentBuzzObject.getTime();
+                 });
+             });
+
+
+             currentBuzzObject.bind('volumechange', function () {
+                 $rootScope.$apply(function () {
+                     SongPlayer.volume = currentBuzzObject.getVolume();
+                 });
+             });
+
 
              SongPlayer.currentSong = song;
          };
@@ -85,6 +99,44 @@
           * @type {Object}
           */
          SongPlayer.currentSong = null;
+
+         /**
+          * @desc Current playback time (in seconds) of currently playing song
+          * @type {Number}
+          */
+         SongPlayer.currentTime = null;
+
+         /**
+          * @function setCurrentTime
+          * @desc Set current time (in seconds) of currently playing song
+          * @param {Number} time
+          */
+         SongPlayer.setCurrentTime = function (time) {
+             if (currentBuzzObject) {
+                 currentBuzzObject.setTime(time);
+             }
+         };
+
+
+         /**
+          * @desc volume of currently playing song
+          * @type {Number}
+          */
+         SongPlayer.volume = null;
+         var currentVolume = 80;
+
+         /**
+          * @function setVolume
+          * @desc Sets volume of currently playing song
+          * @param {Number} volume
+          */
+         SongPlayer.setVolume = function (volume) {
+             if (currentBuzzObject) {
+                 currentBuzzObject.setVolume(volume);
+             }
+             SongPlayer.volume = SongPlayer.currentVolume;
+         };
+
 
          /**
           * @function SongPlayer.play
@@ -163,5 +215,5 @@
 
      angular
          .module('blocJams')
-         .factory('SongPlayer', ['Fixtures', SongPlayer]);
+         .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
  })();
